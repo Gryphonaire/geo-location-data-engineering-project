@@ -11,7 +11,7 @@ OpenCage
 BeautifulSoup4
 GeoPy
 ```
-We had to create a new layer for requests package due to the [issue mentioned here](https://github.com/psf/requests/issues/6443#issuecomment-1535667256)
+We had to create a new layer for requests package due to the [issue mentioned here.](https://github.com/psf/requests/issues/6443#issuecomment-1535667256)
 
 
 
