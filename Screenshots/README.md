@@ -1,7 +1,7 @@
 # Description 
-This page contains the screenshots from the project which might help you understand the code and its execution better.
+This page contains screenshots from the project which might help you understand the code and its execution better.
 
-EventBridge Trigger to run AWS LAMBDA funcions like: aws_lambda_most_beautiful, aws_lambda_most_expensive, etc.
+EventBridge Trigger to run AWS LAMBDA functions like: aws_lambda_most_beautiful, aws_lambda_most_expensive, etc.
 ![1](Screenshots/S3_Trigger.JPG)
 
 
