@@ -15,8 +15,10 @@ import time
 
 geo_key = os.environ.get('geo_key')
 geolocator = Nominatim(user_agent="geocode_beautiful_locations_from_the_world")
-geocode = RateLimiter(geolocator.geocode, min_delay_seconds=2, max_retries=8)
+geocode = RateLimiter(geolocator.geocode, min_delay_seconds=3, max_retries=5)
 geocoder = OpenCageGeocode(geo_key)
+s3 = boto3.client('s3')
+bucket = "geolocation-etl-project"
 
 def most_beautiful(data):
     
@@ -66,12 +68,13 @@ def most_beautiful(data):
         most_beautiful_list.append(address_dict)
     
     return most_beautiful_list
-
-
-
+    
+    
+    
 def most_haunted(data):
     
     most_haunted_list = []
+    
     for i in range(20):
         
         # SEPERATING TITLE AND LOCATION
@@ -126,13 +129,12 @@ def most_haunted(data):
             postcode = "NULL"
         
         # ADDING VARIABLES TO DICTIONARY
-        #print(str(i) +"  "+ title + "  " + city +"  " + country + "  " + country_code.upper() + "  " + continent + "  " + latitude + "  "+ longitude+ "  " + postcode + "\n")
         address_dict = {'Location': title, 'City/State': city, 'Country': country, 'Country Code':country_code.upper(), 'Continent': continent, 'Latitude': str(round(float(latitude),2)), 'Longitude': str(round(float(longitude),2)), 'Postcode': postcode}
         most_haunted_list.append(address_dict)
 
     return most_haunted_list
-
-
+    
+    
 def most_religious(data):
     
     most_religious_list = []
@@ -178,7 +180,9 @@ def most_religious(data):
         most_religious_list.append(address_dict)
     
     return most_religious_list
-
+    
+    
+    
 def most_toured(data):
     
     most_toured_list = []
@@ -210,11 +214,11 @@ def most_toured(data):
          postcode = "NULL"
         
         # ADDING VARIABLES TO DICTIONARY
-        #print(str(i) +"  "+ city +"  " + country + "  " + country_code.upper() + "  " + continent + "  " + latitude + "  "+ longitude+ "  " + postcode + "  " + visitors)
         address_dict = {'City': city, 'Country': country, 'Country Code':country_code.upper(), 'Continent': continent, 'Latitude': str(round(float(latitude),2)), 'Longitude': str(round(float(longitude),2)), 'Postcode': postcode, 'Visitors (in Millions)': visitors}
         most_toured_list.append(address_dict)
 
     return most_toured_list
+
 
 
 def most_expensive(data):
@@ -248,18 +252,37 @@ def most_expensive(data):
             
             
         # ADDING VARIABLES TO DICTIONARY
-        #print(str(i) +"  "+ city +"  " + country + "  " + country_code.upper() + "  " + continent + "  " + latitude + "  "+ longitude+ "  " + postcode)
         address_dict = {'City': city, 'Country': country, 'Country Code':country_code.upper(), 'Continent': continent, 'Latitude': str(round(float(latitude),2)), 'Longitude': str(round(float(longitude),2)), 'Postcode': postcode}
         most_expensive_list.append(address_dict)
     
     return most_expensive_list
+    
+    
+    
+def upload_transformed_data(list,name):
+    
+    # CONVERTING THE LIST TO DATAFRAME
+    name_df = pd.DataFrame.from_dict(list)
+    
+    # NAMING THE FILE
+    name_key = "transformed_data/" + name + "/" + name + "_places_" + str(datetime.now()) + ".csv"
+    name_buffer = StringIO()
+    name_df.to_csv(name_buffer, index=False)
+    name_content = name_buffer.getvalue()
+    
+    #UPLOADING THE DATA
+    try:
+        s3.put_object(Bucket = bucket, Key = name_key, Body = name_content)
+        print("Success: Transformed Data uploaded successfully.")
+    except:
+        print("Failure: Transformed Data failed to upload to S3.")
+    time.sleep(2)
+    
 
 
 
 def lambda_handler(event, context):
     
-    s3 = boto3.client('s3')
-    bucket = "geolocation-etl-project"
     key = "raw_data/to-be-processed/"
     
     geocode_keys = []
@@ -274,83 +297,34 @@ def lambda_handler(event, context):
             
             if "most_beautiful" in file_key:
                 most_beautiful_list = most_beautiful(jsonObject)
-                most_beautiful_df = pd.DataFrame.from_dict(most_beautiful_list)
-                
-                most_beautiful_key = "transformed_data/most_beautiful/most_beautiful_places_" + str(datetime.now()) + ".csv"
-                most_beautiful_buffer = StringIO()
-                most_beautiful_df.to_csv(most_beautiful_buffer, index=False)
-                most_beautiful_content = most_beautiful_buffer.getvalue()
-                try:
-                    s3.put_object(Bucket = bucket, Key = most_beautiful_key, Body = most_beautiful_content)
-                    print("Transformed Data uploaded to S3 successfully.")
-                except:
-                    print("Transformed Data upload to S3 failed.")
                 time.sleep(2)
+                upload_transformed_data(most_beautiful_list, "most_beautiful")
                 
             elif "most_expensive" in file_key:
                 most_expensive_list = most_expensive(jsonObject)
-                most_expensive_df = pd.DataFrame.from_dict(most_expensive_list)
-                
-                most_expensive_key = "transformed_data/most_expensive/most_expensive_places_" + str(datetime.now()) + ".csv"
-                most_expensive_buffer = StringIO()
-                most_expensive_df.to_csv(most_expensive_buffer, index=False)
-                most_expensive_content = most_expensive_buffer.getvalue()
-                try:
-                    s3.put_object(Bucket = bucket, Key = most_expensive_key, Body = most_expensive_content)
-                    print("Transformed Data uploaded to S3 successfully.")
-                except:
-                    print("Transformed Data upload to S3 failed.")
                 time.sleep(2)
+                upload_transformed_data(most_expensive_list, "most_expensive")
             
             elif "most_haunted" in file_key:
                 most_haunted_list = most_haunted(jsonObject)
-                most_haunted_df = pd.DataFrame.from_dict(most_haunted_list)
-                
-                most_haunted_key = "transformed_data/most_haunted/most_haunted_places_" + str(datetime.now()) + ".csv"
-                most_haunted_buffer = StringIO()
-                most_haunted_df.to_csv(most_haunted_buffer, index=False)
-                most_haunted_content = most_haunted_buffer.getvalue()
-                try:
-                    s3.put_object(Bucket = bucket, Key = most_haunted_key, Body = most_haunted_content)
-                    print("Transformed Data uploaded to S3 successfully.")
-                except:
-                    print("Transformed Data upload to S3 failed.")
                 time.sleep(2)
+                upload_transformed_data(most_haunted_list, "most_haunted")
             
             elif "most_religious" in file_key:
                 most_religious_list = most_religious(jsonObject)
-                most_religious_df = pd.DataFrame.from_dict(most_religious_list)
-                
-                most_religious_key = "transformed_data/most_religious/most_religious_places_" + str(datetime.now()) + ".csv"
-                most_religious_buffer = StringIO()
-                most_religious_df.to_csv(most_religious_buffer, index=False)
-                most_religious_content = most_religious_buffer.getvalue()
-                try:
-                    s3.put_object(Bucket = bucket, Key = most_religious_key, Body = most_religious_content)
-                    print("Transformed Data uploaded to S3 successfully.")
-                except:
-                    print("Transformed Data upload to S3 failed.")
                 time.sleep(2)
+                upload_transformed_data(most_religious_list, "most_religious")
             
             
             elif "most_toured" in file_key:
                 most_toured_list = most_toured(jsonObject)
-                most_toured_df = pd.DataFrame.from_dict(most_toured_list)
-                
-                most_toured_key = "transformed_data/most_tourist/most_toured_places_" + str(datetime.now()) + ".csv"
-                most_toured_buffer = StringIO()
-                most_toured_df.to_csv(most_toured_buffer, index=False)
-                most_toured_content = most_toured_buffer.getvalue()
-                try:
-                    s3.put_object(Bucket = bucket, Key = most_toured_key, Body = most_toured_content)
-                    print("Transformed Data uploaded to S3 successfully.")
-                except:
-                    print("Transformed Data upload to S3 failed.")
                 time.sleep(2)
+                upload_transformed_data(most_toured_list, "most_toured")
             
             else:
                 print("This data file doesn't match any given template: " + file_key)
-    
+                
+    # MOVING THE JSON FILE FROM 'raw_data/to_be_processed/' to 'raw_data/processed/'
     s3_resource = boto3.resource('s3')
     for key in geocode_keys:
         copy_source = {
