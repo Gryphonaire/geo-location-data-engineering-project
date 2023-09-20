@@ -23,7 +23,7 @@ Crawlers:
 ![Crawlers](https://github.com/aman-tripathi-01/geo-location-data-engineering-project/assets/31034814/fb3b95d8-d2ee-4134-93bb-797a46b20584)
 
 Glue Data Catalog:
-![Tables created](https://github.com/aman-tripathi-01/geo-location-data-engineering-project/assets/31034814/fa166ede-7837-48bc-ba53-777003303892)
+![Data tables](https://github.com/aman-tripathi-01/geo-location-data-engineering-project/assets/31034814/30bc16c9-5c36-41d8-b386-018173b284cd)
 
 Data from AWS Athena:
 ![Athena](https://github.com/aman-tripathi-01/geo-location-data-engineering-project/assets/31034814/aaa9dea9-1f41-461b-ac36-a7577e5e12cf)
