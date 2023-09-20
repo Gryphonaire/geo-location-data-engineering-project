@@ -17,7 +17,7 @@ Transformed Data stored on S3:
 ![Transformed_data](https://github.com/aman-tripathi-01/geo-location-data-engineering-project/assets/31034814/a5d34c5d-f6cc-486a-9b14-f30897f46698)
 
 Data finally: (Contents of transformed data)
-![Sample_transformed_data](https://github.com/aman-tripathi-01/geo-location-data-engineering-project/assets/31034814/530bae53-6dda-432f-aa4b-877e37cc4b18)
+![Sample_transformed_data](https://github.com/aman-tripathi-01/geo-location-data-engineering-project/assets/31034814/b1f11be6-99f3-42b0-9db9-16d825ea8072)
 
 Crawlers:
 ![Crawlers](https://github.com/aman-tripathi-01/geo-location-data-engineering-project/assets/31034814/fb3b95d8-d2ee-4134-93bb-797a46b20584)
