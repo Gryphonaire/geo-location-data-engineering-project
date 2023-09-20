@@ -4,7 +4,7 @@ This page contains screenshots from the project which might help you understand 
 EventBridge Trigger:
 ![EventBridge Trigger](https://github.com/aman-tripathi-01/geo-location-data-engineering-project/assets/31034814/9a04175a-a975-49d1-889f-c3d03af8926d)
 
-Raw Data stored on S3:
+Raw Data stored on S3 via AWS Lambda:
 ![Raw_Data](https://github.com/aman-tripathi-01/geo-location-data-engineering-project/assets/31034814/abaf8c5f-d490-4007-8f2e-f773d0f505a0)
 
 Data initially: (Contents of raw data)
