@@ -12,7 +12,7 @@ import pandas as pd
 from io import StringIO
 import time
 
-
+# GLOBAL VARIABLES
 geo_key = os.environ.get('geo_key')
 geolocator = Nominatim(user_agent="geocode_beautiful_locations_from_the_world")
 geocode = RateLimiter(geolocator.geocode, min_delay_seconds=3, max_retries=5)
