@@ -4,7 +4,7 @@
 In this project, we will build an ETL pipeline using GeoPY and OpenCage APIs on AWS. The pipeline will use python to crawl some websites, transform the information retrived and then upload it to the database on AWS.
 
 ## Architecture 
-![Architecture Diagram] 
+![Architecture](https://github.com/aman-tripathi-01/geo-location-data-engineering-project/assets/31034814/15b37927-f06d-445a-8e56-96c25b9a38d0)
 
 ## Dataset
 We used python to crawl the 5 websites mentioned below to extract the data:
