@@ -7,7 +7,7 @@ In this project, we will build an ETL pipeline using GeoPY and OpenCage APIs on 
 ![Architecture](https://github.com/aman-tripathi-01/geo-location-data-engineering-project/assets/31034814/15b37927-f06d-445a-8e56-96c25b9a38d0)
 
 ## Dataset
-We used Python to crawl the 5 websites mentioned below to extract the data:
+I used Python to crawl the 5 websites mentioned below to extract the data:
 1. [The 51 Most Beautiful Places in the World](https://www.cntraveler.com/galleries/2015-11-27/the-50-most-beautiful-places-in-the-world)
 2. [2023 Top 20 Most Expensive Cities in the World](https://www.caproasia.com/2023/06/21/2023-top-20-most-expensive-cities-in-the-world-top-10-cities-are-new-york-hong-kong-geneva-london-singapore-zurich-san-francisco-tel-aviv-seoul-tokyo/)
 3. [35 Most Haunted Places in the World](https://www.travelandleisure.com/holiday-travel/halloween/most-haunted-places-in-the-world)
